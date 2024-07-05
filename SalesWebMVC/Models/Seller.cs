@@ -2,17 +2,37 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Linq;
+using System.ComponentModel.DataAnnotations;
 
 namespace SalesWebMVC.Models
 {
 	public class Seller
 	{
         public int Id { get; set; }
-        public string Name { get; set; }
+
+		[Required(ErrorMessage = "{0} required")]
+		[StringLength(maximumLength: 60, MinimumLength = 3, ErrorMessage = "{0} size should be between {2} and {1}")]
+		public string Name { get; set; }
+
+        [Required(ErrorMessage = "{0} required")]
+        [Display(Name = "E-mail")]
+		[EmailAddress(ErrorMessage = "Enter a valid e-mail")]
+		[DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "{0} required")]
+        [Display(Name = "Birth Date")]
+		[DataType(DataType.Date)]
 		public DateTime BirthDate { get; set; }
-		public double BaseSalary { get; set; }
+
+        [Required(ErrorMessage = "{0} required")]
+		[Range(minimum: 100.0, maximum: 50000.0, ErrorMessage = "{0} must be from {1} to {2}")]
+        [Display(Name = "Base Salary")]
+		[DisplayFormat(DataFormatString = "{0:F2}")]
+        public double BaseSalary { get; set; }
         public Department Department { get; set; }
+
+        [Display(Name = "Deparment")]
         public int DepartmentId { get; set; }
         public ICollection<SalesRecord> Sales { get; set; } = new List<SalesRecord>();
 
